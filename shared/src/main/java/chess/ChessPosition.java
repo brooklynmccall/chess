@@ -40,16 +40,16 @@ public class ChessPosition {
             return false;
         }
         ChessPosition that = (ChessPosition) o;
-        return getRow() == that.getRow() && getColumn() == that.getColumn();
+        return row == that.row && col == that.col;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getRow(), getColumn());
+        return Objects.hash(row, col);
     }
 
     @Override
     public String toString() {
-        return "(" + row + ", " + col + ")";
+        return "Position: (" + row + ", " + col + ")";
     }
 }
