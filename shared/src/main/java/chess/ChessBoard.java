@@ -46,12 +46,16 @@ public class ChessBoard {
         board = new ChessPiece[8][8];
     }
 
-    /** @Override
-    public boolean equals(Object obj) {
-        return super.equals(obj);
-    } */
-
     @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        ChessBoard that = (ChessBoard) o;
+        return Arrays.deepEquals(this.board, that.board);
+    }
+
+    /** @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) {
             return false;
@@ -73,6 +77,7 @@ public class ChessBoard {
         }
         return same;
     }
+    */
 
     @Override
     public int hashCode() {
