@@ -1,5 +1,8 @@
 package chess;
 
+import java.util.Arrays;
+import java.util.Objects;
+
 /**
  * A chessboard that can hold and rearrange chess pieces.
  * <p>
@@ -8,8 +11,10 @@ package chess;
  */
 public class ChessBoard {
 
+    private ChessPiece[][] board;
+
     public ChessBoard() {
-        
+        board = new ChessPiece[8][8];
     }
 
     /**
@@ -19,7 +24,7 @@ public class ChessBoard {
      * @param piece    the piece to add
      */
     public void addPiece(ChessPosition position, ChessPiece piece) {
-        throw new RuntimeException("Not implemented");
+        board[position.getRow()-1][position.getColumn()-1] = piece;
     }
 
     /**
@@ -30,7 +35,7 @@ public class ChessBoard {
      * position
      */
     public ChessPiece getPiece(ChessPosition position) {
-        throw new RuntimeException("Not implemented");
+        return board[position.getRow()-1][position.getColumn()-1];
     }
 
     /**
@@ -38,6 +43,54 @@ public class ChessBoard {
      * (How the game of chess normally starts)
      */
     public void resetBoard() {
-        throw new RuntimeException("Not implemented");
+        board = new ChessPiece[8][8];
     }
+
+    /** @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    } */
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        ChessBoard that = (ChessBoard) o;
+        boolean same = true;
+        for (var x = 0; x < 8; x++) {
+            for (var y = 0; y < 8; y++) {
+                if (board[x][y] == null || that.board[x][y] == null) {
+                    if (board[x][y] != that.board[x][y]) {
+                        same = false;
+                        break;
+                    }
+                } else if (!board[x][y].equals(that.board[x][y])) {
+                    same = false;
+                    break;
+                }
+            }
+        }
+        return same;
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.deepHashCode(board);
+    }
+
+    @Override
+    public String toString() {
+
+        String string_board = "ChessBoard{board=\n";
+        for (var x = 0; x < 8; x++) {
+            for (var y = 0; y < 8; y++) {
+                string_board += board[x][y] + " ";
+            }
+            string_board += "\n";
+        }
+
+        return string_board;
+    }
+
 }

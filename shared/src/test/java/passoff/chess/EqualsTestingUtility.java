@@ -40,6 +40,7 @@ public abstract class EqualsTestingUtility<T> {
         original = buildOriginal();
         equivalent = buildOriginal(); // For a second time
         allDifferent = buildAllDifferent();
+
     }
 
     @Test
@@ -48,6 +49,7 @@ public abstract class EqualsTestingUtility<T> {
         Assertions.assertEquals(original, equivalent,
                 className + ".equals() returned false for equivalent " + itemsPlural);
         for (var different : allDifferent) {
+            System.out.println("Original: " + original + "\nDifferent: " + different);
             Assertions.assertNotEquals(original, different,
                     className + ".equals() returned true for different " + itemsPlural);
         }
