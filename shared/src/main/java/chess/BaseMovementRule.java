@@ -8,22 +8,17 @@ public abstract class BaseMovementRule implements MovementRule {
 
     public abstract Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition, ChessPiece myPiece);
 
-    /**
-    private Collection<ChessMove> calculateMoves(ChessBoard board, ChessPosition myPosition, ChessPiece myPiece) {
-        return List.of();
-    } */
-
-    protected boolean isOnBoard(ChessPosition myPosition) {
+    protected boolean isOnBoard(ChessPosition newPosition) {
         return (
-            myPosition.getRow() >= 1
-            && myPosition.getRow() <= 8
-            && myPosition.getColumn() >= 1
-            && myPosition.getColumn() <= 8
+            newPosition.getRow() >= 1
+            && newPosition.getRow() <= 8
+            && newPosition.getColumn() >= 1
+            && newPosition.getColumn() <= 8
         );
     }
 
-    protected boolean isOccupiedBySame(ChessBoard board, ChessPosition myPosition, ChessPiece myPiece) {
-        ChessPiece target = board.getPiece(myPosition);
+    protected boolean isOccupiedBySame(ChessBoard board, ChessPosition newPosition, ChessPiece myPiece) {
+        ChessPiece target = board.getPiece(newPosition);
         if (target == null) {
             return false;
         } else if (target.getTeamColor() != myPiece.getTeamColor()) {
@@ -32,8 +27,8 @@ public abstract class BaseMovementRule implements MovementRule {
         return true;
     }
 
-    protected boolean isOccupiedByOther(ChessBoard board, ChessPosition myPosition, ChessPiece myPiece) {
-        ChessPiece target = board.getPiece(myPosition);
+    protected boolean isOccupiedByOther(ChessBoard board, ChessPosition newPosition, ChessPiece myPiece) {
+        ChessPiece target = board.getPiece(newPosition);
         if (target == null) {
             return false;
         } else if (target.getTeamColor() == myPiece.getTeamColor()) {
@@ -42,8 +37,8 @@ public abstract class BaseMovementRule implements MovementRule {
         return true;
     }
 
-    protected boolean validatePosition(ChessBoard board, ChessPosition myPosition, ChessPiece myPiece) {
-        if (isOnBoard(myPosition) && !isOccupiedBySame(board, myPosition, myPiece)) {
+    protected boolean validatePosition(ChessBoard board, ChessPosition newPosition, ChessPiece myPiece) {
+        if (isOnBoard(newPosition) && !isOccupiedBySame(board, newPosition, myPiece)) {
             return true;
         } else return false;
     }
@@ -56,9 +51,12 @@ public abstract class BaseMovementRule implements MovementRule {
 
         while (validatePosition(board, nextPos, myPiece)) {
             positions.add(nextPos);
-            if (isOccupiedByOther(board, myPosition, myPiece)) {
-                break;
+            if (isOccupiedByOther(board, nextPos, myPiece)) {
+                return positions;
             }
+            oldR = nextPos.getRow();
+            oldC = nextPos.getColumn();
+            nextPos = new ChessPosition(oldR + rChange, oldC + cChange);
         }
         return positions;
     }
