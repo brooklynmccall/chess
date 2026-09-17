@@ -31,7 +31,7 @@ public class KingRule extends BaseMovementRule {
         positions.add(downLeft);
 
         for (ChessPosition position : positions) {
-            if (validatePosition(board, myPosition, myPiece)) {
+            if (validatePosition(board, position, myPiece)) {
                 moves.add(new ChessMove(myPosition, position, null));
             }
         }
