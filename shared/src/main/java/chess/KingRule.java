@@ -14,21 +14,29 @@ public class KingRule extends BaseMovementRule {
         int c = myPosition.getColumn();
 
         ChessPosition left = new ChessPosition(r,c-1);
-        positions.add(left);
-        ChessPosition right = new ChessPosition(r,c+1);
-        positions.add(right);
+        ChessPosition upLeft = new ChessPosition(r-1,c-1);
         ChessPosition up = new ChessPosition(r-1,c);
-        positions.add(up);
+        ChessPosition upRight = new ChessPosition(r-1,c+1);
+        ChessPosition right = new ChessPosition(r,c+1);
+        ChessPosition downRight = new ChessPosition(r+1,c+1);
         ChessPosition down = new ChessPosition(r+1,c);
+        ChessPosition downLeft = new ChessPosition(r+1,c-1);
+        positions.add(left);
+        positions.add(upLeft);
+        positions.add(up);
+        positions.add(upRight);
+        positions.add(right);
+        positions.add(downRight);
         positions.add(down);
+        positions.add(downLeft);
 
         for (ChessPosition position : positions) {
-            if (isOnBoard(position) && !isOccupiedByTeam(board, position, myPiece)) {
+            if (validatePosition(board, myPosition, myPiece)) {
                 moves.add(new ChessMove(myPosition, position, null));
             }
         }
-
         return moves;
+
     }
 
 }

@@ -51,9 +51,9 @@ public class ChessBoard {
         addPiece(new ChessPosition(1,7), new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.KNIGHT));
         addPiece(new ChessPosition(1,8), new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.ROOK));
 
-        for (int y=1; y<=8; y++) {
-            addPiece(new ChessPosition(2, y), new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.PAWN));
-            addPiece(new ChessPosition(7, y), new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.PAWN));
+        for (int c = 1; c <=8; c++) {
+            addPiece(new ChessPosition(2, c), new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.PAWN));
+            addPiece(new ChessPosition(7, c), new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.PAWN));
         }
 
         addPiece(new ChessPosition(8,1), new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.ROOK));
@@ -86,9 +86,9 @@ public class ChessBoard {
     public String toString() {
 
         StringBuilder string_board = new StringBuilder("ChessBoard{board=\n");
-        for (var x = 0; x < 8; x++) {
-            for (var y = 0; y < 8; y++) {
-                string_board.append(board[x][y]).append(" ");
+        for (var r = 0; r < 8; r++) {
+            for (var c = 0; c < 8; c++) {
+                string_board.append(board[r][c]).append(" ");
             }
             string_board.append("\n");
         }
