@@ -55,7 +55,9 @@ public class ChessPiece {
      */
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
         ChessPiece piece = board.getPiece(myPosition);
-        return List.of();
+        Rules ruleGenerator = new Rules();
+        MovementRule myRule = ruleGenerator.getRule(piece);
+        return myRule.pieceMoves(board, myPosition, piece);
     }
 
     @Override
