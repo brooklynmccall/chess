@@ -8,8 +8,8 @@ public class KingRule extends BaseMovementRule {
 
     @Override
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition, ChessPiece myPiece) {
-        List<ChessMove> moves = new ArrayList<ChessMove>();
-        List<ChessPosition> positions = new ArrayList<ChessPosition>();
+        List<ChessMove> moves = new ArrayList<>();
+        List<ChessPosition> positions = new ArrayList<>();
         int r = myPosition.getRow();
         int c = myPosition.getColumn();
 

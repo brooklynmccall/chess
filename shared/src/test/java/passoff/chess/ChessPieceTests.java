@@ -68,10 +68,4 @@ public class ChessPieceTests extends EqualsTestingUtility<ChessPiece> {
         }
     }
 
-    @Test
-    @DisplayName("toString Testing")
-    public void toStringTesting() {
-        System.out.println(buildOriginal());
-    }
-
 }

@@ -18,23 +18,31 @@ public abstract class BaseMovementRule implements MovementRule {
     }
 
     protected boolean isOccupiedBySame(ChessBoard board, ChessPosition newPosition, ChessPiece myPiece) {
-        ChessPiece target = board.getPiece(newPosition);
-        if (target == null) {
-            return false;
-        } else if (target.getTeamColor() != myPiece.getTeamColor()) {
+        if (isOnBoard(newPosition)) {
+            ChessPiece target = board.getPiece(newPosition);
+            if (target == null) {
+                return false;
+            } else if (target.getTeamColor() != myPiece.getTeamColor()) {
+                return false;
+            }
+            return true;
+        } else {
             return false;
         }
-        return true;
     }
 
     protected boolean isOccupiedByOther(ChessBoard board, ChessPosition newPosition, ChessPiece myPiece) {
-        ChessPiece target = board.getPiece(newPosition);
-        if (target == null) {
-            return false;
-        } else if (target.getTeamColor() == myPiece.getTeamColor()) {
+        if (isOnBoard(newPosition)) {
+            ChessPiece target = board.getPiece(newPosition);
+            if (target == null) {
+                return false;
+            } else if (target.getTeamColor() == myPiece.getTeamColor()) {
+                return false;
+            }
+            return true;
+        } else {
             return false;
         }
-        return true;
     }
 
     protected boolean validatePosition(ChessBoard board, ChessPosition newPosition, ChessPiece myPiece) {
@@ -44,7 +52,7 @@ public abstract class BaseMovementRule implements MovementRule {
     }
 
     protected List<ChessPosition> positionsInLine(ChessBoard board, ChessPosition myPosition, ChessPiece myPiece, int rChange, int cChange) {
-        List<ChessPosition> positions = new ArrayList<ChessPosition>();
+        List<ChessPosition> positions = new ArrayList<>();
         int oldR = myPosition.getRow();
         int oldC = myPosition.getColumn();
         ChessPosition nextPos = new ChessPosition(oldR + rChange, oldC + cChange);

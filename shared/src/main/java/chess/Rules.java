@@ -12,7 +12,10 @@ public class Rules {
             return new KnightRule();
         } else if (myPiece.getPieceType() == ChessPiece.PieceType.ROOK) {
             return new RookRule();
+        } else if (myPiece.getPieceType() == ChessPiece.PieceType.PAWN) {
+            return new PawnRule();
+        } else {
+            return null;
         }
-        return null;
     }
 }
