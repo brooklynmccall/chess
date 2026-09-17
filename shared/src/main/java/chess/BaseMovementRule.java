@@ -20,7 +20,7 @@ public abstract class BaseMovementRule implements MovementRule {
         );
     }
 
-    protected boolean isOccupiedByTeam(ChessBoard board, ChessPosition myPosition, ChessPiece myPiece) {
+    protected boolean isOccupiedBySame(ChessBoard board, ChessPosition myPosition, ChessPiece myPiece) {
         ChessPiece target = board.getPiece(myPosition);
         if (target == null) {
             return false;
@@ -29,4 +29,21 @@ public abstract class BaseMovementRule implements MovementRule {
         }
         return true;
     }
+
+    protected boolean isOccupiedByOther(ChessBoard board, ChessPosition myPosition, ChessPiece myPiece) {
+        ChessPiece target = board.getPiece(myPosition);
+        if (target == null) {
+            return false;
+        } else if (target.getTeamColor() == myPiece.getTeamColor()) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean validateMove(ChessBoard board, ChessPosition myPosition, ChessPiece myPiece) {
+        if (isOnBoard(myPosition) && !isOccupiedBySame(board, myPosition, myPiece)) {
+            return true;
+        } else return false;
+    }
+
 }
