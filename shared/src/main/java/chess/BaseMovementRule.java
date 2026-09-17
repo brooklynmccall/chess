@@ -1,7 +1,6 @@
 package chess;
 
 import java.util.Collection;
-import java.util.List;
 
 public abstract class BaseMovementRule implements MovementRule {
 
@@ -21,7 +20,13 @@ public abstract class BaseMovementRule implements MovementRule {
         );
     }
 
-    protected boolean isOccupied(ChessBoard board, ChessPosition myPosition) {
-        return board.getPiece(myPosition) != null;
+    protected boolean isOccupiedByTeam(ChessBoard board, ChessPosition myPosition, ChessPiece myPiece) {
+        ChessPiece target = board.getPiece(myPosition);
+        if (target == null) {
+            return false;
+        } else if (target.getTeamColor() != myPiece.getTeamColor()) {
+            return false;
+        }
+        return true;
     }
 }
