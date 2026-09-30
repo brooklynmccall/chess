@@ -9,7 +9,6 @@ import java.util.Objects;
  * signature of the existing methods.
  */
 public class ChessMove {
-
     private final ChessPosition startPosition;
     private final ChessPosition endPosition;
     private final ChessPiece.PieceType promotionPiece;
@@ -61,8 +60,9 @@ public class ChessMove {
 
     @Override
     public String toString() {
-        return "Move: " + startPosition +
-                " to " + endPosition +
-                ", promotion = " + promotionPiece;
+        return "Move:" +
+                "start=" + startPosition +
+                ", end=" + endPosition +
+                ", promotion=" + promotionPiece;
     }
 }

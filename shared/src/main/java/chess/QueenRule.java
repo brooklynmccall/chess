@@ -1,29 +1,21 @@
 package chess;
 
-import java.util.Collection;
-import java.util.List;
 import java.util.ArrayList;
 
 public class QueenRule extends BaseMovementRule {
 
-    @Override
-    public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition, ChessPiece myPiece) {
-        List<ChessMove> moves = new ArrayList<>();
-        List<ChessPosition> positions = new ArrayList<>();
+    public ArrayList<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition, ChessPiece myPiece) {
+        ArrayList<ChessMove> moves = new ArrayList<>();
 
-        positions.addAll(positionsInLine(board, myPosition, myPiece, 0, -1)); // left
-        positions.addAll(positionsInLine(board, myPosition, myPiece, -1, -1)); // up left
-        positions.addAll(positionsInLine(board, myPosition, myPiece, -1, 0)); // up
-        positions.addAll(positionsInLine(board, myPosition, myPiece, -1, 1)); // up right
-        positions.addAll(positionsInLine(board, myPosition, myPiece, 0, 1)); // right
-        positions.addAll(positionsInLine(board, myPosition, myPiece, 1, 1)); // down right
-        positions.addAll(positionsInLine(board, myPosition, myPiece, 1, 0)); // down
-        positions.addAll(positionsInLine(board, myPosition, myPiece, 1, -1)); // down left
+        moves.addAll(movesInLine(board, myPosition, myPiece, 0, -1)); // Left
+        moves.addAll(movesInLine(board, myPosition, myPiece, 1, -1)); // Up left
+        moves.addAll(movesInLine(board, myPosition, myPiece, 1, 0)); // Up
+        moves.addAll(movesInLine(board, myPosition, myPiece, 1, 1)); // Up right
+        moves.addAll(movesInLine(board, myPosition, myPiece, 0, 1)); // Right
+        moves.addAll(movesInLine(board, myPosition, myPiece, -1, 1)); // Down right
+        moves.addAll(movesInLine(board, myPosition, myPiece, -1, 0)); // Down
+        moves.addAll(movesInLine(board, myPosition, myPiece, -1, -1)); // Down left
 
-        for (ChessPosition position : positions) {
-            moves.add(new ChessMove(myPosition, position, null));
-        }
         return moves;
-
     }
 }

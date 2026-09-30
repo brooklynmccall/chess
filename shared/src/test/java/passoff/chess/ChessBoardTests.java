@@ -93,6 +93,7 @@ public class ChessBoardTests extends EqualsTestingUtility<ChessBoard> {
                 differentBoards.add(createBoardWithPiece(row, col, type, isWhite));
             }
         }
+
         return differentBoards;
     }
 

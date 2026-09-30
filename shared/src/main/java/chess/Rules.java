@@ -1,21 +1,21 @@
 package chess;
 
 public class Rules {
-    public MovementRule getRule(ChessPiece myPiece) {
-        if (myPiece.getPieceType() == ChessPiece.PieceType.KING) {
+    public MovementRule getRule(ChessPiece.PieceType type) {
+        if (type == ChessPiece.PieceType.KING) {
             return new KingRule();
-        } else if (myPiece.getPieceType() == ChessPiece.PieceType.QUEEN) {
-            return new QueenRule();
-        } else if (myPiece.getPieceType() == ChessPiece.PieceType.BISHOP) {
-            return new BishopRule();
-        } else if (myPiece.getPieceType() == ChessPiece.PieceType.KNIGHT) {
-            return new KnightRule();
-        } else if (myPiece.getPieceType() == ChessPiece.PieceType.ROOK) {
+        } else if (type == ChessPiece.PieceType.ROOK) {
             return new RookRule();
-        } else if (myPiece.getPieceType() == ChessPiece.PieceType.PAWN) {
+        } else if (type == ChessPiece.PieceType.BISHOP) {
+            return new BishopRule();
+        } else if (type == ChessPiece.PieceType.QUEEN) {
+            return new QueenRule();
+        } else if (type == ChessPiece.PieceType.KNIGHT) {
+            return new KnightRule();
+        } else if (type == ChessPiece.PieceType.PAWN) {
             return new PawnRule();
         } else {
-            return null;
+            throw new RuntimeException("Not implemented: " + type + " rule.");
         }
     }
 }

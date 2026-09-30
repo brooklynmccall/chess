@@ -1,5 +1,6 @@
 package chess;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
 
@@ -10,7 +11,6 @@ import java.util.Objects;
  * signature of the existing methods.
  */
 public class ChessPiece {
-
     private final ChessGame.TeamColor pieceColor;
     private final ChessPiece.PieceType type;
 
@@ -53,10 +53,13 @@ public class ChessPiece {
      * @return Collection of valid moves
      */
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
-        ChessPiece piece = board.getPiece(myPosition);
+        ArrayList<ChessMove> moves;
+
         Rules ruleGenerator = new Rules();
-        MovementRule myRule = ruleGenerator.getRule(piece);
-        return myRule.pieceMoves(board, myPosition, piece);
+        MovementRule myRule = ruleGenerator.getRule(type);
+
+        moves = myRule.pieceMoves(board, myPosition, this);
+        return moves;
     }
 
     @Override
@@ -75,6 +78,8 @@ public class ChessPiece {
 
     @Override
     public String toString() {
-        return "Piece: " + pieceColor + " " + type;
+        return "Piece: " +
+                "color=" + pieceColor +
+                ", type=" + type;
     }
 }

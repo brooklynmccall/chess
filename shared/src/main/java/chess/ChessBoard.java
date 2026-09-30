@@ -1,6 +1,7 @@
 package chess;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 /**
  * A chessboard that can hold and rearrange chess pieces.
@@ -9,7 +10,6 @@ import java.util.Arrays;
  * signature of the existing methods.
  */
 public class ChessBoard {
-
     private final ChessPiece[][] board;
 
     public ChessBoard() {
@@ -23,7 +23,10 @@ public class ChessBoard {
      * @param piece    the piece to add
      */
     public void addPiece(ChessPosition position, ChessPiece piece) {
-        board[position.getRow()-1][position.getColumn()-1] = piece;
+        int r = position.getRow();
+        int c = position.getColumn();
+
+        board[r-1][c-1] = piece;
     }
 
     /**
@@ -34,7 +37,10 @@ public class ChessBoard {
      * position
      */
     public ChessPiece getPiece(ChessPosition position) {
-        return board[position.getRow()-1][position.getColumn()-1];
+        int r = position.getRow();
+        int c = position.getColumn();
+
+        return board[r-1][c-1];
     }
 
     /**
@@ -51,9 +57,12 @@ public class ChessBoard {
         addPiece(new ChessPosition(1,7), new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.KNIGHT));
         addPiece(new ChessPosition(1,8), new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.ROOK));
 
-        for (int c = 1; c <=8; c++) {
-            addPiece(new ChessPosition(2, c), new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.PAWN));
-            addPiece(new ChessPosition(7, c), new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.PAWN));
+        for (int c=1; c<=8; c++) {
+            addPiece(new ChessPosition(2,c), new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.PAWN));
+        }
+
+        for (int c=1; c<=8; c++) {
+            addPiece(new ChessPosition(7,c), new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.PAWN));
         }
 
         addPiece(new ChessPosition(8,1), new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.ROOK));
@@ -73,9 +82,8 @@ public class ChessBoard {
             return false;
         }
         ChessBoard that = (ChessBoard) o;
-        return Arrays.deepEquals(this.board, that.board);
+        return Objects.deepEquals(board, that.board);
     }
-
 
     @Override
     public int hashCode() {
@@ -84,16 +92,6 @@ public class ChessBoard {
 
     @Override
     public String toString() {
-
-        StringBuilder string_board = new StringBuilder("ChessBoard{board=\n");
-        for (var r = 0; r < 8; r++) {
-            for (var c = 0; c < 8; c++) {
-                string_board.append(board[r][c]).append(" ");
-            }
-            string_board.append("\n");
-        }
-
-        return string_board.toString();
+        return "Board: " + Arrays.toString(board);
     }
-
 }

@@ -1,6 +1,7 @@
 package chess;
-import java.util.Collection;
+
+import java.util.ArrayList;
 
 public interface MovementRule {
-    Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition, ChessPiece myPiece);
+    ArrayList<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition, ChessPiece myPiece);
 }

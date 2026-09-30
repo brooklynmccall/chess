@@ -1,72 +1,52 @@
 package chess;
-
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
-public abstract class BaseMovementRule implements MovementRule {
+public abstract class BaseMovementRule implements MovementRule{
+    public abstract ArrayList<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition, ChessPiece myPiece);
 
-    public abstract Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition, ChessPiece myPiece);
+    protected boolean isOnBoard(ChessPosition position) {
+        int r = position.getRow();
+        int c = position.getColumn();
 
-    protected boolean isOnBoard(ChessPosition newPosition) {
-        return (
-            newPosition.getRow() >= 1
-            && newPosition.getRow() <= 8
-            && newPosition.getColumn() >= 1
-            && newPosition.getColumn() <= 8
-        );
+        return r >= 1 && r <= 8 && c >= 1 && c <= 8;
     }
 
-    protected boolean isOccupiedBySame(ChessBoard board, ChessPosition newPosition, ChessPiece myPiece) {
-        if (isOnBoard(newPosition)) {
-            ChessPiece target = board.getPiece(newPosition);
-            if (target == null) {
-                return false;
-            } else if (target.getTeamColor() != myPiece.getTeamColor()) {
-                return false;
+    protected boolean isOccupiedBySame(ChessBoard board, ChessPosition position, ChessPiece myPiece) {
+        ChessGame.TeamColor color = myPiece.getTeamColor();
+
+        ChessPiece other = board.getPiece(position);
+
+        return other != null && other.getTeamColor() == color;
+    }
+
+    protected boolean isOccupiedByOther(ChessBoard board, ChessPosition position, ChessPiece myPiece) {
+        ChessGame.TeamColor color = myPiece.getTeamColor();
+
+        ChessPiece other = board.getPiece(position);
+
+        return other != null && other.getTeamColor() != color;
+    }
+
+    protected boolean validatePosition(ChessBoard board, ChessPosition position, ChessPiece myPiece) {
+        return isOnBoard(position) && !isOccupiedBySame(board, position, myPiece);
+    }
+
+    protected ArrayList<ChessMove> movesInLine(ChessBoard board, ChessPosition myPosition, ChessPiece myPiece, int rDif, int cDif) {
+        ArrayList<ChessMove> moves = new ArrayList<>();
+        int newR = myPosition.getRow() + rDif;
+        int newC = myPosition.getColumn() + cDif;
+        ChessPosition newPosition = new ChessPosition(newR, newC);
+
+        while(validatePosition(board, newPosition, myPiece)) {
+            moves.add(new ChessMove(myPosition, newPosition, null));
+            if (isOccupiedByOther(board, newPosition, myPiece)) {
+                break;
             }
-            return true;
-        } else {
-            return false;
+
+            newR += rDif;
+            newC += cDif;
+            newPosition = new ChessPosition(newR, newC);
         }
+        return moves;
     }
-
-    protected boolean isOccupiedByOther(ChessBoard board, ChessPosition newPosition, ChessPiece myPiece) {
-        if (isOnBoard(newPosition)) {
-            ChessPiece target = board.getPiece(newPosition);
-            if (target == null) {
-                return false;
-            } else if (target.getTeamColor() == myPiece.getTeamColor()) {
-                return false;
-            }
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    protected boolean validatePosition(ChessBoard board, ChessPosition newPosition, ChessPiece myPiece) {
-        if (isOnBoard(newPosition) && !isOccupiedBySame(board, newPosition, myPiece)) {
-            return true;
-        } else return false;
-    }
-
-    protected List<ChessPosition> positionsInLine(ChessBoard board, ChessPosition myPosition, ChessPiece myPiece, int rChange, int cChange) {
-        List<ChessPosition> positions = new ArrayList<>();
-        int oldR = myPosition.getRow();
-        int oldC = myPosition.getColumn();
-        ChessPosition nextPos = new ChessPosition(oldR + rChange, oldC + cChange);
-
-        while (validatePosition(board, nextPos, myPiece)) {
-            positions.add(nextPos);
-            if (isOccupiedByOther(board, nextPos, myPiece)) {
-                return positions;
-            }
-            oldR = nextPos.getRow();
-            oldC = nextPos.getColumn();
-            nextPos = new ChessPosition(oldR + rChange, oldC + cChange);
-        }
-        return positions;
-    }
-
 }

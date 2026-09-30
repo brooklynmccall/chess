@@ -40,7 +40,6 @@ public abstract class EqualsTestingUtility<T> {
         original = buildOriginal();
         equivalent = buildOriginal(); // For a second time
         allDifferent = buildAllDifferent();
-
     }
 
     @Test

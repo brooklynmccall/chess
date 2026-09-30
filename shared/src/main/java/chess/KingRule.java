@@ -1,40 +1,30 @@
 package chess;
 
-import java.util.Collection;
-import java.util.List;
 import java.util.ArrayList;
 
 public class KingRule extends BaseMovementRule {
 
-    @Override
-    public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition, ChessPiece myPiece) {
-        List<ChessMove> moves = new ArrayList<>();
-        List<ChessPosition> positions = new ArrayList<>();
+    public ArrayList<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition, ChessPiece myPiece) {
+        ArrayList<ChessPosition> positions = new ArrayList<>();
+        ArrayList<ChessMove> moves = new ArrayList<>();
         int r = myPosition.getRow();
         int c = myPosition.getColumn();
 
-        ChessPosition left = new ChessPosition(r,c-1);
-        ChessPosition upLeft = new ChessPosition(r-1,c-1);
-        ChessPosition up = new ChessPosition(r-1,c);
-        ChessPosition upRight = new ChessPosition(r-1,c+1);
-        ChessPosition right = new ChessPosition(r,c+1);
-        ChessPosition downRight = new ChessPosition(r+1,c+1);
-        ChessPosition down = new ChessPosition(r+1,c);
-        ChessPosition downLeft = new ChessPosition(r+1,c-1);
-        positions.add(left);
-        positions.add(upLeft);
-        positions.add(up);
-        positions.add(upRight);
-        positions.add(right);
-        positions.add(downRight);
-        positions.add(down);
-        positions.add(downLeft);
+        positions.add(new ChessPosition(r, c-1)); // Left
+        positions.add(new ChessPosition(r+1, c-1)); // Up left
+        positions.add(new ChessPosition(r+1, c)); // Up
+        positions.add(new ChessPosition(r+1, c+1)); // Up right
+        positions.add(new ChessPosition(r, c+1)); // Right
+        positions.add(new ChessPosition(r-1, c+1)); // Down right
+        positions.add(new ChessPosition(r-1, c)); // Down
+        positions.add(new ChessPosition(r-1, c-1)); // Down left
 
         for (ChessPosition position : positions) {
-            if (validatePosition(board, position, myPiece)) {
+            if(validatePosition(board, position, myPiece)) {
                 moves.add(new ChessMove(myPosition, position, null));
             }
         }
+
         return moves;
 
     }
