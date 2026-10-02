@@ -17,7 +17,12 @@ public class ChessBoard {
     }
 
     public ChessBoard(ChessBoard other) {
-        this.board = other.board;
+        board = new ChessPiece[8][8];
+        for (int r=0; r<=7; r++) {
+            for (int c=0; c<=7; c++) {
+                board[r][c] = other.getPiece(new ChessPosition(r+1, c+1));
+            }
+        }
     }
 
     /**

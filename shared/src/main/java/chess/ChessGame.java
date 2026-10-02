@@ -91,8 +91,8 @@ public class ChessGame {
      */
     private static Set<ChessMove> allMoves(TeamColor teamColor, ChessBoard board) {
         Set<ChessMove> moves = new HashSet<>();
-        for (int c=1; c<=8; c++) {
-            for (int r=1; r<=8; r++) {
+        for (int r=1; r<=8; r++) {
+            for (int c=1; c<=8; c++) {
                 ChessPosition currentPos = new ChessPosition(r, c);
                 ChessPiece current = board.getPiece(currentPos);
                 if (current != null && current.getTeamColor() == teamColor) {
