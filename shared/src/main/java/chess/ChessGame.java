@@ -120,6 +120,10 @@ public class ChessGame {
 
         Set<ChessMove> moves = new HashSet<>(validMoves(startPos));
         if (moves.contains(move)) {
+            if (move.getPromotionPiece() != null) {
+                current = new ChessPiece(color, move.getPromotionPiece());
+            }
+
             board.addPiece(endPos, current);
             board.addPiece(startPos, null);
 
@@ -167,7 +171,7 @@ public class ChessGame {
      * @return position of king
      */
     private ChessPosition getKingPos (TeamColor teamColor) {
-        ChessPosition kingPos = null;
+        ChessPosition kingPos;
 
         for (int c=1; c<=8; c++) {
             for (int r=1; r<=8; r++) {
