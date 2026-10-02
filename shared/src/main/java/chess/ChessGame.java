@@ -55,8 +55,7 @@ public class ChessGame {
      */
     public Collection<ChessMove> validMoves(ChessPosition startPosition) {
         ChessPiece current = board.getPiece(startPosition);
-        Set<ChessMove> moves = new HashSet<>();
-        moves.addAll(current.pieceMoves(board, startPosition));
+        Set<ChessMove> moves = new HashSet<>(current.pieceMoves(board, startPosition));
 
         for (ChessMove move : moves) {
             ChessBoard newBoard = new ChessBoard(board);
@@ -108,16 +107,16 @@ public class ChessGame {
         ChessPosition endPos = move.getEndPosition();
         ChessPiece current = board.getPiece(startPos);
         TeamColor color = current.getTeamColor();
-        if (color != turn) {
-            return;
-        }
+        if (color != turn) throw new InvalidMoveException("Not your turn.");
 
-        Set<ChessMove> moves = new HashSet<>();
-        moves.addAll(validMoves(startPos));
+        Set<ChessMove> moves = new HashSet<>(validMoves(startPos));
         if (moves.contains(move)) {
             board.addPiece(endPos, current);
             board.addPiece(startPos, null);
-        }
+
+            TeamColor enemyColor = (color == TeamColor.WHITE)? TeamColor.BLACK : TeamColor.WHITE;
+            turn = enemyColor;
+        } else throw new InvalidMoveException("Not a valid move.");
 
     }
 
