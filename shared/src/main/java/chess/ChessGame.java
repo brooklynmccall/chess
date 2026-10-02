@@ -113,6 +113,8 @@ public class ChessGame {
         ChessPosition startPos = move.getStartPosition();
         ChessPosition endPos = move.getEndPosition();
         ChessPiece current = board.getPiece(startPos);
+        if (current == null) throw new InvalidMoveException("No piece to move.");
+
         TeamColor color = current.getTeamColor();
         if (color != turn) throw new InvalidMoveException("Not your turn.");
 
