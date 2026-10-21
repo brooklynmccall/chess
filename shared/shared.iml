@@ -12,5 +12,6 @@
     <orderEntry type="library" name="google.code.gson" level="project" />
     <orderEntry type="library" name="io.javalin1" level="project" />
     <orderEntry type="library" name="google.code.gson1" level="project" />
+    <orderEntry type="module" module-name="server" />
   </component>
 </module>
