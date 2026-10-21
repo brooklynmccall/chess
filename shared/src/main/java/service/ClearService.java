@@ -2,6 +2,7 @@ package service;
 
 import dataaccess.AuthDAO;
 import dataaccess.DataAccessException;
+import dataaccess.GameDAO;
 import dataaccess.UserDAO;
 import model.AuthData;
 import model.UserData;
@@ -21,9 +22,9 @@ public class ClearService {
     }
 
     public void clear() throws DataAccessException {
-
-
-        return new LoginResult(user.username(), auth.authToken());
+        userDAO.clearUsers();
+        authDAO.clearAuths();
+        gameDAO.clearGames();
     }
 
 }
