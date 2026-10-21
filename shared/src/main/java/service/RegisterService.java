@@ -23,9 +23,10 @@ public class RegisterService {
         if (user != null) {
             throw new AlreadyTakenException("Error: username already taken");
         }
-        AuthData auth = authDAO.createAuth(user.username());
+        userDAO.createUser(registerRequest.username(), registerRequest.password(), registerRequest.email());
+        AuthData auth = authDAO.createAuth(registerRequest.username());
 
-        return new RegisterResult(user.username(), auth.authToken());
+        return new RegisterResult(registerRequest.username(), auth.authToken());
     }
 
 }
