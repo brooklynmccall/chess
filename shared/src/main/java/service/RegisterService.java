@@ -2,13 +2,10 @@ package service;
 
 import dataaccess.AlreadyTakenException;
 import dataaccess.AuthDAO;
-import dataaccess.DataAccessException;
 import dataaccess.UserDAO;
 import model.AuthData;
 import model.UserData;
-import service.request.LoginRequest;
 import service.request.RegisterRequest;
-import service.result.LoginResult;
 import service.result.RegisterResult;
 
 public class RegisterService {
