@@ -9,5 +9,5 @@ public interface GameDAO {
     GameData createGame (String gameName);
     GameData[] listGames ();
     GameData updateGame(int gameID, GameData newData);
-    void deleteGame (int gameID);
+    void clearGames ();
 }

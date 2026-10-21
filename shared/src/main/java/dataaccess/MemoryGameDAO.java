@@ -36,7 +36,7 @@ public class MemoryGameDAO implements GameDAO {
     }
 
     @Override
-    public void deleteGame(int gameID) {
-        games.remove(gameID);
+    public void clearGames() {
+        games.clear();
     }
 }
