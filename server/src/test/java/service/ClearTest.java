@@ -4,7 +4,6 @@ import dataaccess.*;
 import org.junit.jupiter.api.Test;
 import service.request.CreateGameRequest;
 import service.request.RegisterRequest;
-import service.result.CreateGameResult;
 import service.result.RegisterResult;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -66,10 +65,10 @@ public class ClearTest {
         String authToken = draco.authToken();
 
         CreateGameRequest gameRequest = new CreateGameRequest(authToken, "Wizard's Chess");
-        CreateGameResult gameResult = createGameService.createGame(gameRequest);
+        int gameID = createGameService.createGame(gameRequest);
 
         clear();
-        assertNull(gameDAO.getGame(gameResult.gameID()));
+        assertNull(gameDAO.getGame(gameID));
 
     }
 
