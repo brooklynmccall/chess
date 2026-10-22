@@ -2,7 +2,9 @@ package service;
 
 import dataaccess.*;
 import org.junit.jupiter.api.Test;
+import service.request.CreateGameRequest;
 import service.request.RegisterRequest;
+import service.result.CreateGameResult;
 import service.result.RegisterResult;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -58,20 +60,16 @@ public class ClearTest {
     }
 
     @Test
-    void clearGameSuccess() {
-        RegisterRequest harryRequest = new RegisterRequest("hpotter", "jameslilyharry", "harry.potter@hogwarts.edu");
-        RegisterRequest hermioneRequest = new RegisterRequest("hgranger", "spew4ever", "hermione.granger@hogwarts.edu");
-        RegisterRequest ronRequest = new RegisterRequest("rweasley", "chudleycannonsRgr8", "ron.weasley@hogwarts.edu");
+    void clearGamesSuccess() throws DataAccessException {
+        RegisterRequest dracoRequest = new RegisterRequest("dmalfoy", "pottermustdie", "draco.malfoy@hogwarts.edu");
+        RegisterResult draco = registerService.register(dracoRequest);
+        String authToken = draco.authToken();
 
-        RegisterResult harryResult = registerService.register(harryRequest);
-        RegisterResult hermioneResult = registerService.register(hermioneRequest);
-        RegisterResult ronResult = registerService.register(ronRequest);
+        CreateGameRequest gameRequest = new CreateGameRequest(authToken, "Wizard's Chess");
+        CreateGameResult gameResult = createGameService.createGame(gameRequest);
 
         clear();
-
-        assertNull(authDAO.getAuth(harryResult.authToken()));
-        assertNull(authDAO.getAuth(hermioneResult.authToken()));
-        assertNull(authDAO.getAuth(ronResult.authToken()));
+        assertNull(gameDAO.getGame(gameResult.gameID()));
 
     }
 
