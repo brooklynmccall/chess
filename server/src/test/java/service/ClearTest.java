@@ -1,7 +1,6 @@
 package service;
 
 import dataaccess.*;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import service.request.RegisterRequest;
 import service.result.RegisterResult;
@@ -18,20 +17,62 @@ public class ClearTest {
     static final RegisterService registerService = new RegisterService(userDAO, authDAO);
     static final CreateGameService createGameService = new CreateGameService(authDAO, gameDAO);
 
-    @BeforeEach
     void clear() {
         clearService.clear();
     }
 
     @Test
-    void registerUser() {
+    void clearUsersSuccess() {
+        RegisterRequest harryRequest = new RegisterRequest("hpotter", "jameslilyharry", "harry.potter@hogwarts.edu");
         RegisterRequest hermioneRequest = new RegisterRequest("hgranger", "spew4ever", "hermione.granger@hogwarts.edu");
-        RegisterResult hermioneResult = registerService.register(hermioneRequest);
+        RegisterRequest ronRequest = new RegisterRequest("rweasley", "chudleycannonsRgr8", "ron.weasley@hogwarts.edu");
 
-        assertNotNull(userDAO.getUser("hgranger"));
+        registerService.register(harryRequest);
+        registerService.register(hermioneRequest);
+        registerService.register(ronRequest);
+
+        clear();
+
         assertNull(userDAO.getUser("hpotter"));
+        assertNull(userDAO.getUser("hgranger"));
+        assertNull(userDAO.getUser("rweasley"));
+
     }
 
+    @Test
+    void clearAuthSuccess() {
+        RegisterRequest harryRequest = new RegisterRequest("hpotter", "jameslilyharry", "harry.potter@hogwarts.edu");
+        RegisterRequest hermioneRequest = new RegisterRequest("hgranger", "spew4ever", "hermione.granger@hogwarts.edu");
+        RegisterRequest ronRequest = new RegisterRequest("rweasley", "chudleycannonsRgr8", "ron.weasley@hogwarts.edu");
 
+        RegisterResult harryResult = registerService.register(harryRequest);
+        RegisterResult hermioneResult = registerService.register(hermioneRequest);
+        RegisterResult ronResult = registerService.register(ronRequest);
+
+        clear();
+
+        assertNull(authDAO.getAuth(harryResult.authToken()));
+        assertNull(authDAO.getAuth(hermioneResult.authToken()));
+        assertNull(authDAO.getAuth(ronResult.authToken()));
+
+    }
+
+    @Test
+    void clearGameSuccess() {
+        RegisterRequest harryRequest = new RegisterRequest("hpotter", "jameslilyharry", "harry.potter@hogwarts.edu");
+        RegisterRequest hermioneRequest = new RegisterRequest("hgranger", "spew4ever", "hermione.granger@hogwarts.edu");
+        RegisterRequest ronRequest = new RegisterRequest("rweasley", "chudleycannonsRgr8", "ron.weasley@hogwarts.edu");
+
+        RegisterResult harryResult = registerService.register(harryRequest);
+        RegisterResult hermioneResult = registerService.register(hermioneRequest);
+        RegisterResult ronResult = registerService.register(ronRequest);
+
+        clear();
+
+        assertNull(authDAO.getAuth(harryResult.authToken()));
+        assertNull(authDAO.getAuth(hermioneResult.authToken()));
+        assertNull(authDAO.getAuth(ronResult.authToken()));
+
+    }
 
 }
