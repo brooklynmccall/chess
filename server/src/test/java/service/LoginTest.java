@@ -3,13 +3,11 @@ package service;
 import dataaccess.*;
 import org.junit.jupiter.api.Test;
 import service.request.LoginRequest;
-import service.request.LogoutRequest;
 import service.request.RegisterRequest;
 import service.result.LoginResult;
 import service.result.RegisterResult;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 public class LoginTest {
 
@@ -30,9 +28,9 @@ public class LoginTest {
         RegisterResult hermione = registerService.register(hermioneRequest);
         RegisterResult ron = registerService.register(ronRequest);
 
-        logoutService.logout(new LogoutRequest(harry.authToken()));
-        logoutService.logout(new LogoutRequest(hermione.authToken()));
-        logoutService.logout(new LogoutRequest(ron.authToken()));
+        logoutService.logout(harry.authToken());
+        logoutService.logout(hermione.authToken());
+        logoutService.logout(ron.authToken());
 
         LoginResult harryLogin = loginService.login(new LoginRequest("hpotter", "jameslilyharry"));
         LoginResult hermioneLogin = loginService.login(new LoginRequest("hgranger", "spew4ever"));
@@ -48,7 +46,7 @@ public class LoginTest {
         RegisterRequest dracoRequest = new RegisterRequest("dmalfoy", "pottermustdie", "draco.malfoy@hogwarts.edu");
         RegisterResult draco = registerService.register(dracoRequest);
 
-        logoutService.logout(new LogoutRequest(draco.authToken()));
+        logoutService.logout(draco.authToken());
 
         assertThrows(DataAccessException.class, () -> loginService.login(new LoginRequest("dmalfoy", "ilovevoldy")));
         assertNull(authDAO.getAuth(draco.authToken()));

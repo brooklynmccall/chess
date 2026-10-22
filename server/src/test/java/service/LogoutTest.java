@@ -1,9 +1,7 @@
 package service;
 
 import dataaccess.*;
-import model.UserData;
 import org.junit.jupiter.api.Test;
-import service.request.LogoutRequest;
 import service.request.RegisterRequest;
 import service.result.RegisterResult;
 
@@ -31,9 +29,9 @@ public class LogoutTest {
         assertNotNull(authDAO.getAuth(hermione.authToken()));
         assertNotNull(authDAO.getAuth(ron.authToken()));
 
-        assertDoesNotThrow(() -> logoutService.logout(new LogoutRequest(harry.authToken())));
-        assertDoesNotThrow(() -> logoutService.logout(new LogoutRequest(hermione.authToken())));
-        assertDoesNotThrow(() -> logoutService.logout(new LogoutRequest(ron.authToken())));
+        assertDoesNotThrow(() -> logoutService.logout(harry.authToken()));
+        assertDoesNotThrow(() -> logoutService.logout(hermione.authToken()));
+        assertDoesNotThrow(() -> logoutService.logout(ron.authToken()));
 
         assertNull(authDAO.getAuth(harry.authToken()));
         assertNull(authDAO.getAuth(hermione.authToken()));
@@ -42,9 +40,9 @@ public class LogoutTest {
 
     @Test
     void testLogoutUsersFailure() throws DataAccessException {
-        assertThrows(DataAccessException.class, () -> logoutService.logout(new LogoutRequest("Alohamora")));
-        assertThrows(DataAccessException.class, () -> logoutService.logout(new LogoutRequest("Wingardium leviosa")));
-        assertThrows(DataAccessException.class, () -> logoutService.logout(new LogoutRequest("Expelliarmus")));
+        assertThrows(DataAccessException.class, () -> logoutService.logout("Alohamora"));
+        assertThrows(DataAccessException.class, () -> logoutService.logout("Wingardium leviosa"));
+        assertThrows(DataAccessException.class, () -> logoutService.logout("Expelliarmus"));
     }
 
 }

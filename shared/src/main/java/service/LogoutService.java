@@ -2,11 +2,6 @@ package service;
 
 import dataaccess.AuthDAO;
 import dataaccess.DataAccessException;
-import model.AuthData;
-import model.UserData;
-import service.request.LoginRequest;
-import service.request.LogoutRequest;
-import service.result.LoginResult;
 
 public class LogoutService {
 
@@ -16,8 +11,8 @@ public class LogoutService {
         this.authDAO = authDAO;
     }
 
-    public void logout(LogoutRequest logoutRequest) throws DataAccessException {
-        boolean success = authDAO.deleteAuth(logoutRequest.authToken());
+    public void logout(String authToken) throws DataAccessException {
+        boolean success = authDAO.deleteAuth(authToken);
         if (success == false) {
             throw new DataAccessException("Error: unauthorized");
         }
