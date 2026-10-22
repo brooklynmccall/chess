@@ -6,7 +6,7 @@ public interface AuthDAO {
 
     AuthData getAuth (String authToken);
     AuthData createAuth (String username);
-    void deleteAuth (String authToken);
+    boolean deleteAuth (String authToken);
     void clearAuths ();
 
 }
