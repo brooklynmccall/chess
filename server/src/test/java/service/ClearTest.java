@@ -14,12 +14,12 @@ public class ClearTest {
     static AuthDAO authDAO = new MemoryAuthDAO();
     static GameDAO gameDAO = new MemoryGameDAO();
 
-    static final ClearService ClearService = new ClearService(userDAO, authDAO, gameDAO);
-    static final RegisterService RegisterService = new RegisterService(userDAO, authDAO);
-    static final CreateGameService CreateGameService = new CreateGameService(authDAO, gameDAO);
+    static final ClearService CLEAR_SERVICE = new ClearService(userDAO, authDAO, gameDAO);
+    static final RegisterService REGISTER_SERVICE = new RegisterService(userDAO, authDAO);
+    static final CreateGameService CREATE_GAME_SERVICE = new CreateGameService(authDAO, gameDAO);
 
     void clear() {
-        ClearService.clear();
+        CLEAR_SERVICE.clear();
     }
 
     @Test
@@ -28,9 +28,9 @@ public class ClearTest {
         RegisterRequest hermioneRequest = new RegisterRequest("hgranger", "spew4ever", "hermione.granger@hogwarts.edu");
         RegisterRequest ronRequest = new RegisterRequest("rweasley", "chudleycannonsRgr8", "ron.weasley@hogwarts.edu");
 
-        RegisterService.register(harryRequest);
-        RegisterService.register(hermioneRequest);
-        RegisterService.register(ronRequest);
+        REGISTER_SERVICE.register(harryRequest);
+        REGISTER_SERVICE.register(hermioneRequest);
+        REGISTER_SERVICE.register(ronRequest);
 
         clear();
 
@@ -46,9 +46,9 @@ public class ClearTest {
         RegisterRequest hermioneRequest = new RegisterRequest("hgranger", "spew4ever", "hermione.granger@hogwarts.edu");
         RegisterRequest ronRequest = new RegisterRequest("rweasley", "chudleycannonsRgr8", "ron.weasley@hogwarts.edu");
 
-        RegisterResult harryResult = RegisterService.register(harryRequest);
-        RegisterResult hermioneResult = RegisterService.register(hermioneRequest);
-        RegisterResult ronResult = RegisterService.register(ronRequest);
+        RegisterResult harryResult = REGISTER_SERVICE.register(harryRequest);
+        RegisterResult hermioneResult = REGISTER_SERVICE.register(hermioneRequest);
+        RegisterResult ronResult = REGISTER_SERVICE.register(ronRequest);
 
         clear();
 
@@ -61,11 +61,11 @@ public class ClearTest {
     @Test
     void clearGamesSuccess() throws DataAccessException, AlreadyTakenException, BadRequestException {
         RegisterRequest dracoRequest = new RegisterRequest("dmalfoy", "pottermustdie", "draco.malfoy@hogwarts.edu");
-        RegisterResult draco = RegisterService.register(dracoRequest);
+        RegisterResult draco = REGISTER_SERVICE.register(dracoRequest);
         String authToken = draco.authToken();
 
         CreateGameRequest gameRequest = new CreateGameRequest(authToken, "Wizard's Chess");
-        int gameID = CreateGameService.createGame(gameRequest);
+        int gameID = CREATE_GAME_SERVICE.createGame(gameRequest);
 
         clear();
         assertNull(gameDAO.getGame(gameID));

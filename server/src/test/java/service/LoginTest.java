@@ -14,9 +14,9 @@ public class LoginTest {
     static UserDAO userDAO = new MemoryUserDAO();
     static AuthDAO authDAO = new MemoryAuthDAO();
 
-    static final RegisterService RegisterService = new RegisterService(userDAO, authDAO);
-    static final LoginService LoginService = new LoginService(userDAO, authDAO);
-    static final LogoutService LogoutService = new LogoutService(authDAO);
+    static final RegisterService REGISTER_SERVICE = new RegisterService(userDAO, authDAO);
+    static final LoginService LOGIN_SERVICE = new LoginService(userDAO, authDAO);
+    static final LogoutService LOGOUT_SERVICE = new LogoutService(authDAO);
 
     @Test
     void testLogoutUsersSuccess() throws DataAccessException, AlreadyTakenException, BadRequestException {
@@ -24,17 +24,17 @@ public class LoginTest {
         RegisterRequest hermioneRequest = new RegisterRequest("hgranger", "spew4ever", "hermione.granger@hogwarts.edu");
         RegisterRequest ronRequest = new RegisterRequest("rweasley", "chudleycannonsRgr8", "ron.weasley@hogwarts.edu");
 
-        RegisterResult harry = RegisterService.register(harryRequest);
-        RegisterResult hermione = RegisterService.register(hermioneRequest);
-        RegisterResult ron = RegisterService.register(ronRequest);
+        RegisterResult harry = REGISTER_SERVICE.register(harryRequest);
+        RegisterResult hermione = REGISTER_SERVICE.register(hermioneRequest);
+        RegisterResult ron = REGISTER_SERVICE.register(ronRequest);
 
-        LogoutService.logout(harry.authToken());
-        LogoutService.logout(hermione.authToken());
-        LogoutService.logout(ron.authToken());
+        LOGOUT_SERVICE.logout(harry.authToken());
+        LOGOUT_SERVICE.logout(hermione.authToken());
+        LOGOUT_SERVICE.logout(ron.authToken());
 
-        LoginResult harryLogin = LoginService.login(new LoginRequest("hpotter", "jameslilyharry"));
-        LoginResult hermioneLogin = LoginService.login(new LoginRequest("hgranger", "spew4ever"));
-        LoginResult ronLogin = LoginService.login(new LoginRequest("rweasley", "chudleycannonsRgr8"));
+        LoginResult harryLogin = LOGIN_SERVICE.login(new LoginRequest("hpotter", "jameslilyharry"));
+        LoginResult hermioneLogin = LOGIN_SERVICE.login(new LoginRequest("hgranger", "spew4ever"));
+        LoginResult ronLogin = LOGIN_SERVICE.login(new LoginRequest("rweasley", "chudleycannonsRgr8"));
 
         assertNotNull(authDAO.getAuth(harryLogin.authToken()));
         assertNotNull(authDAO.getAuth(hermioneLogin.authToken()));
@@ -44,14 +44,14 @@ public class LoginTest {
     @Test
     void testLogoutUsersFailure() throws DataAccessException, AlreadyTakenException, BadRequestException {
         RegisterRequest dracoRequest = new RegisterRequest("dmalfoy", "pottermustdie", "draco.malfoy@hogwarts.edu");
-        RegisterResult draco = RegisterService.register(dracoRequest);
+        RegisterResult draco = REGISTER_SERVICE.register(dracoRequest);
 
-        LogoutService.logout(draco.authToken());
+        LOGOUT_SERVICE.logout(draco.authToken());
 
-        assertThrows(DataAccessException.class, () -> LoginService.login(new LoginRequest("dmalfoy", "ilovevoldy")));
+        assertThrows(DataAccessException.class, () -> LOGIN_SERVICE.login(new LoginRequest("dmalfoy", "ilovevoldy")));
         assertNull(authDAO.getAuth(draco.authToken()));
 
-        assertThrows(DataAccessException.class, () -> LoginService.login(new LoginRequest("llovegood", "thequibbler")));
+        assertThrows(DataAccessException.class, () -> LOGIN_SERVICE.login(new LoginRequest("llovegood", "thequibbler")));
 
     }
 
