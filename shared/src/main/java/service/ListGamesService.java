@@ -5,6 +5,7 @@ import dataaccess.DataAccessException;
 import dataaccess.GameDAO;
 import model.AuthData;
 import model.GameData;
+import service.result.ListGamesResult;
 
 public class ListGamesService {
 
@@ -16,13 +17,13 @@ public class ListGamesService {
         this.gameDAO = gameDAO;
     }
 
-    public GameData[] listGames(String authToken) throws DataAccessException {
+    public ListGamesResult listGames(String authToken) throws DataAccessException {
         AuthData auth = authDAO.getAuth(authToken);
         if (auth == null) {
             throw new DataAccessException("Error: unauthorized");
         }
-        GameData[] gameList = gameDAO.listGames();
-        return gameList;
+        ListGamesResult games = new ListGamesResult(gameDAO.listGames());
+        return games;
     }
 
 }

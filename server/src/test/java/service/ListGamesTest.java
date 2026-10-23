@@ -4,6 +4,7 @@ import dataaccess.*;
 import org.junit.jupiter.api.Test;
 import service.request.CreateGameRequest;
 import service.request.RegisterRequest;
+import service.result.ListGamesResult;
 import service.result.RegisterResult;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -27,8 +28,9 @@ public class ListGamesTest {
 
         CreateGameRequest gameRequest = new CreateGameRequest(authToken, "Wizard's Chess");
         createGameService.createGame(gameRequest);
+        ListGamesResult games = listGamesService.listGames(authToken);
 
-        assertNotNull(listGamesService.listGames(authToken));
+        assertNotNull(games.games());
     }
 
     @Test
@@ -39,8 +41,9 @@ public class ListGamesTest {
         RegisterResult draco = registerService.register(dracoRequest);
 
         String authToken = draco.authToken();
+        ListGamesResult games = listGamesService.listGames(authToken);
 
-        assert(listGamesService.listGames(authToken).length == 0);
+        assert(games.games().length == 0);
         CreateGameRequest gameRequest = new CreateGameRequest(authToken, "Wizard's Chess");
 
         createGameService.createGame(gameRequest);

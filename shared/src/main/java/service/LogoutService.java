@@ -13,7 +13,7 @@ public class LogoutService {
 
     public void logout(String authToken) throws DataAccessException {
         boolean success = authDAO.deleteAuth(authToken);
-        if (success == false) {
+        if (success == false || authToken == null) {
             throw new DataAccessException("Error: unauthorized");
         }
 
