@@ -4,7 +4,6 @@ import dataaccess.AuthDAO;
 import dataaccess.DataAccessException;
 import dataaccess.GameDAO;
 import model.AuthData;
-import model.GameData;
 import service.result.ListGamesResult;
 
 public class ListGamesService {
@@ -22,8 +21,7 @@ public class ListGamesService {
         if (auth == null) {
             throw new DataAccessException("Error: unauthorized");
         }
-        ListGamesResult games = new ListGamesResult(gameDAO.listGames());
-        return games;
+        return new ListGamesResult(gameDAO.listGames());
     }
 
 }

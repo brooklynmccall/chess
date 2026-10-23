@@ -6,8 +6,6 @@ import com.google.gson.JsonSyntaxException;
 import dataaccess.*;
 import io.javalin.*;
 import io.javalin.http.Context;
-import model.GameData;
-import model.UserData;
 import service.*;
 import service.request.*;
 import service.result.*;
@@ -16,7 +14,7 @@ import java.util.Map;
 
 public class Server {
 
-    private final Javalin javalin;
+    private final Javalin javalin = Javalin.create(config -> config.staticFiles.add("web"));
 
     private final UserDAO userDAO;
     private final AuthDAO authDAO;
@@ -42,8 +40,6 @@ public class Server {
         listGamesService = new ListGamesService(authDAO, gameDAO);
         createGameService = new CreateGameService(authDAO, gameDAO);
         joinGameService = new JoinGameService(authDAO, gameDAO);
-
-        javalin = Javalin.create(config -> config.staticFiles.add("web"));
 
         // Register your endpoints and exception handlers here.
         javalin.delete("/db", this::clear);
@@ -103,7 +99,7 @@ public class Server {
         ctx.result(new Gson().toJson(result));
     }
 
-    private void login(Context ctx) throws DataAccessException, AlreadyTakenException, BadRequestException {
+    private void login(Context ctx) throws DataAccessException, BadRequestException {
         LoginRequest request = new Gson().fromJson(ctx.body(), LoginRequest.class);
         LoginResult result = loginService.login(request);
 
