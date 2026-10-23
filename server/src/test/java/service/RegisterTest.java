@@ -14,7 +14,7 @@ public class RegisterTest {
     static final RegisterService registerService = new RegisterService(userDAO, authDAO);
 
     @Test
-    void testRegisterUsersSuccess() {
+    void testRegisterUsersSuccess() throws AlreadyTakenException {
         RegisterRequest harryRequest = new RegisterRequest("hpotter", "jameslilyharry", "harry.potter@hogwarts.edu");
         RegisterRequest hermioneRequest = new RegisterRequest("hgranger", "spew4ever", "hermione.granger@hogwarts.edu");
         RegisterRequest ronRequest = new RegisterRequest("rweasley", "chudleycannonsRgr8", "ron.weasley@hogwarts.edu");

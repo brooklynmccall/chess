@@ -23,7 +23,7 @@ public class ClearTest {
     }
 
     @Test
-    void clearUsersSuccess() {
+    void clearUsersSuccess() throws AlreadyTakenException {
         RegisterRequest harryRequest = new RegisterRequest("hpotter", "jameslilyharry", "harry.potter@hogwarts.edu");
         RegisterRequest hermioneRequest = new RegisterRequest("hgranger", "spew4ever", "hermione.granger@hogwarts.edu");
         RegisterRequest ronRequest = new RegisterRequest("rweasley", "chudleycannonsRgr8", "ron.weasley@hogwarts.edu");
@@ -41,7 +41,7 @@ public class ClearTest {
     }
 
     @Test
-    void clearAuthSuccess() {
+    void clearAuthSuccess() throws AlreadyTakenException {
         RegisterRequest harryRequest = new RegisterRequest("hpotter", "jameslilyharry", "harry.potter@hogwarts.edu");
         RegisterRequest hermioneRequest = new RegisterRequest("hgranger", "spew4ever", "hermione.granger@hogwarts.edu");
         RegisterRequest ronRequest = new RegisterRequest("rweasley", "chudleycannonsRgr8", "ron.weasley@hogwarts.edu");
@@ -59,7 +59,7 @@ public class ClearTest {
     }
 
     @Test
-    void clearGamesSuccess() throws DataAccessException {
+    void clearGamesSuccess() throws DataAccessException, AlreadyTakenException {
         RegisterRequest dracoRequest = new RegisterRequest("dmalfoy", "pottermustdie", "draco.malfoy@hogwarts.edu");
         RegisterResult draco = registerService.register(dracoRequest);
         String authToken = draco.authToken();

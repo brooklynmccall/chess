@@ -19,7 +19,7 @@ public class ListGamesTest {
     static final ListGamesService listGamesService = new ListGamesService(authDAO, gameDAO);
 
     @Test
-    void testListGamesSuccess() throws DataAccessException {
+    void testListGamesSuccess() throws DataAccessException, AlreadyTakenException {
         RegisterRequest harryRequest = new RegisterRequest("hpotter", "jameslilyharry", "harry.potter@hogwarts.edu");
         RegisterResult harryResult = registerService.register(harryRequest);
 
@@ -32,7 +32,7 @@ public class ListGamesTest {
     }
 
     @Test
-    void testListGamesFailure() throws DataAccessException {
+    void testListGamesFailure() throws DataAccessException, AlreadyTakenException {
         clearService.clear();
 
         RegisterRequest dracoRequest = new RegisterRequest("dmalfoy", "pottermustdie", "draco.malfoy@hogwarts.edu");
