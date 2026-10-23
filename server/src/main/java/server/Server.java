@@ -53,6 +53,7 @@ public class Server {
         javalin.put("/game", this::joinGame);
         javalin.exception(DataAccessException.class, this::dataAccessExceptionHandler);
         javalin.exception(AlreadyTakenException.class, this::alreadyTakenExceptionHandler);
+        javalin.exception(BadRequestException.class, this::badRequestExceptionHandler);
 
     }
 
@@ -75,20 +76,25 @@ public class Server {
         ctx.result(new Gson().toJson(Map.of("message", ex.getMessage())));
     }
 
+    private void badRequestExceptionHandler(BadRequestException ex, Context ctx) {
+        ctx.status(400);
+        ctx.result(new Gson().toJson(Map.of("message", ex.getMessage())));
+    }
+
     private void clear(Context ctx) {
         clearService.clear();
         ctx.status(200);
         ctx.result(new Gson().toJson(Map.of()));
     }
 
-    private void register(Context ctx) throws AlreadyTakenException {
+    private void register(Context ctx) throws AlreadyTakenException, BadRequestException {
         RegisterRequest request = new Gson().fromJson(ctx.body(), RegisterRequest.class);
         RegisterResult result = registerService.register(request);
         ctx.status(200);
         ctx.result(new Gson().toJson(result));
     }
 
-    private void login(Context ctx) throws DataAccessException, AlreadyTakenException {
+    private void login(Context ctx) throws DataAccessException, AlreadyTakenException, BadRequestException {
         LoginRequest request = new Gson().fromJson(ctx.body(), LoginRequest.class);
         LoginResult result = loginService.login(request);
         ctx.status(200);
@@ -109,14 +115,14 @@ public class Server {
         ctx.result(new Gson().toJson(games));
     }
 
-    private void createGame(Context ctx) throws DataAccessException {
+    private void createGame(Context ctx) throws DataAccessException, BadRequestException {
         CreateGameRequest request = new Gson().fromJson(ctx.body(), CreateGameRequest.class);
         int gameID = createGameService.createGame(request);
         ctx.status(200);
         ctx.result(new Gson().toJson(gameID));
     }
 
-    private void joinGame(Context ctx) throws DataAccessException, AlreadyTakenException {
+    private void joinGame(Context ctx) throws DataAccessException, AlreadyTakenException, BadRequestException {
         JoinGameRequest request = new Gson().fromJson(ctx.body(), JoinGameRequest.class);
         joinGameService.joinGame(request);
         ctx.status(200);
