@@ -41,6 +41,15 @@ public class JoinGameService {
             }
         }
 
+        if (joinGameRequest.color() == ChessGame.TeamColor.BLACK) {
+            if (game.blackUsername() != null) {
+                throw new AlreadyTakenException("Error: color already taken");
+            } else {
+                GameData newGame = new GameData(game.gameID(), game.whiteUsername(), username, game.gameName(), game.game());
+                gameDAO.updateGame(game.gameID(), newGame);
+            }
+        }
+
     }
 
 }
