@@ -118,10 +118,14 @@ public class ChessGame {
         ChessPosition startPos = move.getStartPosition();
         ChessPosition endPos = move.getEndPosition();
         ChessPiece current = board.getPiece(startPos);
-        if (current == null) throw new InvalidMoveException("No piece to move.");
+        if (current == null) {
+            throw new InvalidMoveException("No piece to move.");
+        }
 
         TeamColor color = current.getTeamColor();
-        if (color != turn) throw new InvalidMoveException("Not your turn.");
+        if (color != turn) {
+            throw new InvalidMoveException("Not your turn.");
+        }
 
         Set<ChessMove> moves = new HashSet<>(validMoves(startPos));
         if (moves.contains(move)) {
@@ -133,7 +137,9 @@ public class ChessGame {
             board.addPiece(startPos, null);
 
             turn = (color == TeamColor.WHITE)? TeamColor.BLACK : TeamColor.WHITE;
-        } else throw new InvalidMoveException("Not a valid move.");
+        } else {
+            throw new InvalidMoveException("Not a valid move.");
+        }
 
     }
 

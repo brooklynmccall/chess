@@ -14,39 +14,39 @@ public class ListGamesTest {
     static AuthDAO authDAO = new MemoryAuthDAO();
     static GameDAO gameDAO = new MemoryGameDAO();
 
-    static final ClearService clearService = new ClearService(userDAO, authDAO, gameDAO);
-    static final RegisterService registerService = new RegisterService(userDAO, authDAO);
-    static final CreateGameService createGameService = new CreateGameService(authDAO, gameDAO);
-    static final ListGamesService listGamesService = new ListGamesService(authDAO, gameDAO);
+    static final ClearService ClearService = new ClearService(userDAO, authDAO, gameDAO);
+    static final RegisterService RegisterService = new RegisterService(userDAO, authDAO);
+    static final CreateGameService CreateGameService = new CreateGameService(authDAO, gameDAO);
+    static final ListGamesService ListGamesService = new ListGamesService(authDAO, gameDAO);
 
     @Test
     void testListGamesSuccess() throws DataAccessException, AlreadyTakenException, BadRequestException {
         RegisterRequest harryRequest = new RegisterRequest("hpotter", "jameslilyharry", "harry.potter@hogwarts.edu");
-        RegisterResult harryResult = registerService.register(harryRequest);
+        RegisterResult harryResult = RegisterService.register(harryRequest);
 
         String authToken = harryResult.authToken();
 
         CreateGameRequest gameRequest = new CreateGameRequest(authToken, "Wizard's Chess");
-        createGameService.createGame(gameRequest);
-        ListGamesResult games = listGamesService.listGames(authToken);
+        CreateGameService.createGame(gameRequest);
+        ListGamesResult games = ListGamesService.listGames(authToken);
 
         assertNotNull(games.games());
     }
 
     @Test
     void testListGamesFailure() throws DataAccessException, AlreadyTakenException, BadRequestException {
-        clearService.clear();
+        ClearService.clear();
 
         RegisterRequest dracoRequest = new RegisterRequest("dmalfoy", "pottermustdie", "draco.malfoy@hogwarts.edu");
-        RegisterResult draco = registerService.register(dracoRequest);
+        RegisterResult draco = RegisterService.register(dracoRequest);
 
         String authToken = draco.authToken();
-        ListGamesResult games = listGamesService.listGames(authToken);
+        ListGamesResult games = ListGamesService.listGames(authToken);
 
         assert(games.games().length == 0);
         CreateGameRequest gameRequest = new CreateGameRequest(authToken, "Wizard's Chess");
 
-        createGameService.createGame(gameRequest);
-        assertThrows(DataAccessException.class, () -> listGamesService.listGames("Alohamora"));
+        CreateGameService.createGame(gameRequest);
+        assertThrows(DataAccessException.class, () -> ListGamesService.listGames("Alohamora"));
     }
 }

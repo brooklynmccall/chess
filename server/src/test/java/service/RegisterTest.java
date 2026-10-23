@@ -11,7 +11,7 @@ public class RegisterTest {
     static UserDAO userDAO = new MemoryUserDAO();
     static AuthDAO authDAO = new MemoryAuthDAO();
 
-    static final RegisterService registerService = new RegisterService(userDAO, authDAO);
+    static final RegisterService RegisterService = new RegisterService(userDAO, authDAO);
 
     @Test
     void testRegisterUsersSuccess() throws AlreadyTakenException, BadRequestException {
@@ -19,9 +19,9 @@ public class RegisterTest {
         RegisterRequest hermioneRequest = new RegisterRequest("hgranger", "spew4ever", "hermione.granger@hogwarts.edu");
         RegisterRequest ronRequest = new RegisterRequest("rweasley", "chudleycannonsRgr8", "ron.weasley@hogwarts.edu");
 
-        registerService.register(harryRequest);
-        registerService.register(hermioneRequest);
-        registerService.register(ronRequest);
+        RegisterService.register(harryRequest);
+        RegisterService.register(hermioneRequest);
+        RegisterService.register(ronRequest);
 
         assertNotNull(userDAO.getUser("hpotter"));
         assertNotNull(userDAO.getUser("hgranger"));
@@ -36,9 +36,9 @@ public class RegisterTest {
         RegisterRequest hermioneRequest = new RegisterRequest("hgranger", "spew4ever", "hermione.granger@hogwarts.edu");
         RegisterRequest ronRequest = new RegisterRequest("rweasley", "chudleycannonsRgr8", "ron.weasley@hogwarts.edu");
 
-        assertThrows(AlreadyTakenException.class, () -> registerService.register(harryRequest));
-        assertThrows(AlreadyTakenException.class, () -> registerService.register(hermioneRequest));
-        assertThrows(AlreadyTakenException.class, () -> registerService.register(ronRequest));
+        assertThrows(AlreadyTakenException.class, () -> RegisterService.register(harryRequest));
+        assertThrows(AlreadyTakenException.class, () -> RegisterService.register(hermioneRequest));
+        assertThrows(AlreadyTakenException.class, () -> RegisterService.register(ronRequest));
 
     }
 

@@ -14,18 +14,18 @@ public class CreateGameTest {
     static AuthDAO authDAO = new MemoryAuthDAO();
     static GameDAO gameDAO = new MemoryGameDAO();
 
-    static final RegisterService registerService = new RegisterService(userDAO, authDAO);
-    static final CreateGameService createGameService = new CreateGameService(authDAO, gameDAO);
+    static final RegisterService RegisterService = new RegisterService(userDAO, authDAO);
+    static final CreateGameService CreateGameService = new CreateGameService(authDAO, gameDAO);
 
     @Test
     void testCreateGameSuccess() throws DataAccessException, AlreadyTakenException, BadRequestException {
         RegisterRequest harryRequest = new RegisterRequest("hpotter", "jameslilyharry", "harry.potter@hogwarts.edu");
-        RegisterResult harryResult = registerService.register(harryRequest);
+        RegisterResult harryResult = RegisterService.register(harryRequest);
 
         String authToken = harryResult.authToken();
 
         CreateGameRequest gameRequest = new CreateGameRequest(authToken, "Wizard's Chess");
-        int gameID = createGameService.createGame(gameRequest);
+        int gameID = CreateGameService.createGame(gameRequest);
 
         assertNotNull(gameDAO.getGame(gameID));
 
@@ -35,7 +35,7 @@ public class CreateGameTest {
     void testCreateGameFail() throws DataAccessException {
         CreateGameRequest gameRequest = new CreateGameRequest("This is my magic authToken.", "Wizard's Chess");
 
-        assertThrows(DataAccessException.class, () -> createGameService.createGame(gameRequest));
+        assertThrows(DataAccessException.class, () -> CreateGameService.createGame(gameRequest));
 
     }
 }
