@@ -1,6 +1,7 @@
 package service;
 
 import dataaccess.AuthDAO;
+import dataaccess.BadRequestException;
 import dataaccess.DataAccessException;
 import dataaccess.UserDAO;
 import model.AuthData;
@@ -18,7 +19,13 @@ public class LoginService {
         this.authDAO = authDAO;
     }
 
-    public LoginResult login(LoginRequest loginRequest) throws DataAccessException {
+    public LoginResult login(LoginRequest loginRequest) throws DataAccessException, BadRequestException {
+        if (loginRequest.username() == ""
+                || loginRequest.username() == null
+                || loginRequest.password() == ""
+                || loginRequest.password() == null) {
+            throw new BadRequestException("Error: bad request");
+        }
         UserData user = userDAO.getUser(loginRequest.username());
         if (user == null || !loginRequest.password().equals(user.password())) {
             throw new DataAccessException("Error: unauthorized");

@@ -19,7 +19,7 @@ public class LoginTest {
     static final LogoutService logoutService = new LogoutService(authDAO);
 
     @Test
-    void testLogoutUsersSuccess() throws DataAccessException, AlreadyTakenException {
+    void testLogoutUsersSuccess() throws DataAccessException, AlreadyTakenException, BadRequestException {
         RegisterRequest harryRequest = new RegisterRequest("hpotter", "jameslilyharry", "harry.potter@hogwarts.edu");
         RegisterRequest hermioneRequest = new RegisterRequest("hgranger", "spew4ever", "hermione.granger@hogwarts.edu");
         RegisterRequest ronRequest = new RegisterRequest("rweasley", "chudleycannonsRgr8", "ron.weasley@hogwarts.edu");
@@ -42,7 +42,7 @@ public class LoginTest {
     }
 
     @Test
-    void testLogoutUsersFailure() throws DataAccessException, AlreadyTakenException {
+    void testLogoutUsersFailure() throws DataAccessException, AlreadyTakenException, BadRequestException {
         RegisterRequest dracoRequest = new RegisterRequest("dmalfoy", "pottermustdie", "draco.malfoy@hogwarts.edu");
         RegisterResult draco = registerService.register(dracoRequest);
 

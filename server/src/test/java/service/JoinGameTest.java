@@ -23,7 +23,7 @@ public class JoinGameTest {
     static final JoinGameService joinGameService = new JoinGameService(authDAO, gameDAO);
 
     @Test
-    void testJoinGameSuccess() throws DataAccessException, AlreadyTakenException {
+    void testJoinGameSuccess() throws DataAccessException, AlreadyTakenException, BadRequestException {
         RegisterRequest harryRequest = new RegisterRequest("hpotter", "jameslilyharry", "harry.potter@hogwarts.edu");
         RegisterResult harryResult = registerService.register(harryRequest);
         String authToken = harryResult.authToken();
@@ -40,7 +40,7 @@ public class JoinGameTest {
     }
 
     @Test
-    void testJoinGameFailure() throws DataAccessException, AlreadyTakenException {
+    void testJoinGameFailure() throws DataAccessException, AlreadyTakenException, BadRequestException {
         clearService.clear();
         RegisterRequest harryRequest = new RegisterRequest("hpotter", "jameslilyharry", "harry.potter@hogwarts.edu");
         RegisterResult harryResult = registerService.register(harryRequest);

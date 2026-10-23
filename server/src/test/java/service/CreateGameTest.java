@@ -18,7 +18,7 @@ public class CreateGameTest {
     static final CreateGameService createGameService = new CreateGameService(authDAO, gameDAO);
 
     @Test
-    void testCreateGameSuccess() throws DataAccessException, AlreadyTakenException {
+    void testCreateGameSuccess() throws DataAccessException, AlreadyTakenException, BadRequestException {
         RegisterRequest harryRequest = new RegisterRequest("hpotter", "jameslilyharry", "harry.potter@hogwarts.edu");
         RegisterResult harryResult = registerService.register(harryRequest);
 

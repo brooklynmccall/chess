@@ -16,7 +16,11 @@ public class JoinGameService {
         this.gameDAO = gameDAO;
     }
 
-    public void joinGame(JoinGameRequest joinGameRequest) throws DataAccessException, AlreadyTakenException {
+    public void joinGame(JoinGameRequest joinGameRequest) throws DataAccessException, AlreadyTakenException, BadRequestException {
+        if (joinGameRequest.authToken() == ""
+                || joinGameRequest.authToken() == null) {
+            throw new BadRequestException("Error: bad request");
+        }
         AuthData auth = authDAO.getAuth(joinGameRequest.authToken());
         if (auth == null) {
             throw new DataAccessException("Error: unauthorized");

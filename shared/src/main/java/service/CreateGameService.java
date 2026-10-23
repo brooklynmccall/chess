@@ -1,6 +1,7 @@
 package service;
 
 import dataaccess.AuthDAO;
+import dataaccess.BadRequestException;
 import dataaccess.DataAccessException;
 import dataaccess.GameDAO;
 import model.AuthData;
@@ -17,7 +18,13 @@ public class CreateGameService {
         this.gameDAO = gameDAO;
     }
 
-    public int createGame(CreateGameRequest createGameRequest) throws DataAccessException {
+    public int createGame(CreateGameRequest createGameRequest) throws DataAccessException, BadRequestException {
+        if (createGameRequest.authToken() == ""
+                || createGameRequest.authToken() == null
+                || createGameRequest.gameName() == ""
+                || createGameRequest.gameName() == null) {
+            throw new BadRequestException("Error: bad request");
+        }
         AuthData auth = authDAO.getAuth(createGameRequest.authToken());
         if (auth == null) {
             throw new DataAccessException("Error: unauthorized");
