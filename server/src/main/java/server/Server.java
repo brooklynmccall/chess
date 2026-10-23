@@ -1,6 +1,8 @@
 package server;
 
+import chess.ChessGame;
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import dataaccess.*;
 import io.javalin.*;
 import io.javalin.http.Context;
@@ -54,6 +56,7 @@ public class Server {
         javalin.exception(DataAccessException.class, this::dataAccessExceptionHandler);
         javalin.exception(AlreadyTakenException.class, this::alreadyTakenExceptionHandler);
         javalin.exception(BadRequestException.class, this::badRequestExceptionHandler);
+        javalin.exception(JsonSyntaxException.class, this::jsonSyntaxExceptionHandler);
 
     }
 
@@ -81,6 +84,11 @@ public class Server {
         ctx.result(new Gson().toJson(Map.of("message", ex.getMessage())));
     }
 
+    private void jsonSyntaxExceptionHandler(JsonSyntaxException ex, Context ctx) {
+        ctx.status(401);
+        ctx.result(new Gson().toJson(Map.of("message", "Error: unauthorized")));
+    }
+
     private void clear(Context ctx) {
         clearService.clear();
         ctx.status(200);
@@ -90,6 +98,7 @@ public class Server {
     private void register(Context ctx) throws AlreadyTakenException, BadRequestException {
         RegisterRequest request = new Gson().fromJson(ctx.body(), RegisterRequest.class);
         RegisterResult result = registerService.register(request);
+
         ctx.status(200);
         ctx.result(new Gson().toJson(result));
     }
@@ -97,33 +106,49 @@ public class Server {
     private void login(Context ctx) throws DataAccessException, AlreadyTakenException, BadRequestException {
         LoginRequest request = new Gson().fromJson(ctx.body(), LoginRequest.class);
         LoginResult result = loginService.login(request);
+
         ctx.status(200);
         ctx.result(new Gson().toJson(result));
     }
 
     private void logout(Context ctx) throws DataAccessException {
-        String authToken = new Gson().fromJson(ctx.body(), String.class);
+        String authToken = new Gson().fromJson(ctx.header("Authorization"), String.class);
         logoutService.logout(authToken);
+
         ctx.status(200);
         ctx.result(new Gson().toJson(Map.of()));
     }
 
     private void listGames(Context ctx) throws DataAccessException {
-        String authToken = new Gson().fromJson(ctx.body(), String.class);
-        GameData[] games = listGamesService.listGames(authToken);
+        String authToken = new Gson().fromJson(ctx.header("Authorization"), String.class);
+        ListGamesResult games = listGamesService.listGames(authToken);
+
         ctx.status(200);
         ctx.result(new Gson().toJson(games));
     }
 
     private void createGame(Context ctx) throws DataAccessException, BadRequestException {
-        CreateGameRequest request = new Gson().fromJson(ctx.body(), CreateGameRequest.class);
+        String authToken = new Gson().fromJson(ctx.header("Authorization"), String.class);
+        Map<String, String> bodyMap = new Gson().fromJson(ctx.body(), Map.class);
+        String gameName = bodyMap.get("gameName");
+        CreateGameRequest request = new CreateGameRequest(authToken, gameName);
         int gameID = createGameService.createGame(request);
+
         ctx.status(200);
-        ctx.result(new Gson().toJson(gameID));
+        ctx.result(new Gson().toJson(Map.of("gameID", gameID)));
     }
 
     private void joinGame(Context ctx) throws DataAccessException, AlreadyTakenException, BadRequestException {
-        JoinGameRequest request = new Gson().fromJson(ctx.body(), JoinGameRequest.class);
+        String authToken = new Gson().fromJson(ctx.header("Authorization"), String.class);
+        Map<String, Object> bodyMap = new Gson().fromJson(ctx.body(), Map.class);
+        if (bodyMap.get("playerColor") == null
+                || ((!bodyMap.get("playerColor").equals("BLACK")) && (!bodyMap.get("playerColor").equals("WHITE")))
+                || bodyMap.get("gameID") == null) {
+            throw new BadRequestException("Error: bad request");
+        }
+        ChessGame.TeamColor color = ChessGame.TeamColor.valueOf((String) bodyMap.get("playerColor"));
+        int gameID = ((Double) bodyMap.get("gameID")).intValue();
+        JoinGameRequest request = new JoinGameRequest(authToken, color, gameID);
         joinGameService.joinGame(request);
         ctx.status(200);
         ctx.result(new Gson().toJson(Map.of()));
