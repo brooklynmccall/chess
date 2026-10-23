@@ -20,7 +20,7 @@ public class LoginService {
 
     public LoginResult login(LoginRequest loginRequest) throws DataAccessException {
         UserData user = userDAO.getUser(loginRequest.username());
-        if (user == null || loginRequest.password() != user.password()) {
+        if (user == null || !loginRequest.password().equals(user.password())) {
             throw new DataAccessException("Error: unauthorized");
         }
         AuthData auth = authDAO.createAuth(user.username());
